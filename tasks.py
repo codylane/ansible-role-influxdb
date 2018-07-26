@@ -6,7 +6,6 @@ from invoke import context
 from io import open
 
 import os
-import testinfra
 import yaml
 
 
@@ -42,7 +41,7 @@ def create_ansible_inventory(filename, inventory, mode='w', encoding='utf-8'):
 
 
 def read_molecule_yml(scenario):
-    molecule_dir = os.path.join(PROJECT_ROOT_DIR, 'molecule/{scenario}'.format(scenario=scenario))  # noqa: E501
+    molecule_dir = os.path.join(PROJECT_ROOT_DIR, 'molecule/{scenario}'.format(scenario=scenario))
     molecule_yml = os.path.join(molecule_dir, 'molecule.yml')
 
     with open(molecule_yml, mode='r') as fd:
