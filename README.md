@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/codylane/ansible-role-influxdb.svg?branch=master)](https://travis-ci.org/codylane/ansible-role-influxdb)
+
 influxdb
 =========
 
