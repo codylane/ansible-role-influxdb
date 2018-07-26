@@ -13,7 +13,7 @@ Role Variables
 
 # Defaults
 
-* See the [defaults](../defaults/main.yml)
+* See the [defaults](defaults/main.yml)
 
 #### `influxdb_version`
 
