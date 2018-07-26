@@ -1,0 +1,1 @@
+influxdb_centos7 ansible_connection=docker

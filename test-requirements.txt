@@ -1,0 +1,4 @@
+-r requirements.txt
+docker
+molecule==2.16.0
+PyYAML==3.12

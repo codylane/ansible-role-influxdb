@@ -1,0 +1,120 @@
+# This config file is managed by Ansible
+
+# GLOBAL configuration options
+{{ influxdb_conf.global | build_influxdb_config_section(section='global', show_header=False) }}
+
+###
+### [meta]
+###
+### Controls the parameters for the Raft consensus group that stores metadata
+### about the InfluxDB cluster.
+###
+{{ influxdb_conf.meta | build_influxdb_config_section(section='meta', show_header=True) }}
+
+###
+### [data]
+###
+### Controls where the actual shard data for InfluxDB lives and how it is
+### flushed from the WAL. "dir" may need to be changed to a suitable place
+### for your system, but the WAL settings are an advanced configuration. The
+### defaults should work for most systems.
+###
+{{ influxdb_conf.data | build_influxdb_config_section(section='data', show_header=True) }}
+
+###
+### [coordinator]
+###
+### Controls the clustering service configuration.
+###
+{{ influxdb_conf.coordinator | build_influxdb_config_section(section='coordinator', show_header=True) }}
+
+###
+### [retention]
+###
+### Controls the enforcement of retention policies for evicting old data.
+###
+{{ influxdb_conf.retention | build_influxdb_config_section(section='retention', show_header=True) }}
+
+###
+### [shard-precreation]
+###
+### Controls the precreation of shards, so they are available before data arrives.
+### Only shards that, after creation, will have both a start- and end-time in the
+### future, will ever be created. Shards are never precreated that would be wholly
+### or partially in the past.
+{{ influxdb_conf['shard-precreation'] | build_influxdb_config_section(section='shard-precreation', show_header=True) }}
+
+###
+### Controls the system self-monitoring, statistics and diagnostics.
+###
+### The internal database for monitoring data is created automatically if
+### if it does not already exist. The target retention within this database
+### is called 'monitor' and is also created with a retention period of 7 days
+### and a replication factor of 1, if it does not exist. In all cases the
+### this retention policy is configured as the default for the database.
+{{ influxdb_conf.monitor | build_influxdb_config_section(section='monitor', show_header=True) }}
+
+###
+### [http]
+###
+### Controls how the HTTP endpoints are configured. These are the primary
+### mechanism for getting data into and out of InfluxDB.
+###
+{{ influxdb_conf.http | build_influxdb_config_section(section='http', show_header=True) }}
+
+###
+### [ifql]
+###
+### Configures the ifql RPC API.
+###
+{{ influxdb_conf.ifql| build_influxdb_config_section(section='ifql', show_header=True) }}
+
+###
+### [logging]
+###
+### Controls how the logger emits logs to the output.
+###
+{{ influxdb_conf.logging | build_influxdb_config_section(section='logging', show_header=True) }}
+
+###
+### [subscriber]
+###
+### Controls the subscriptions, which can be used to fork a copy of all data
+### received by the InfluxDB host.
+###
+{{ influxdb_conf.subscriber | build_influxdb_config_section(section='subscriber', show_header=True) }}
+
+###
+### [[graphite]]
+###
+### Controls one or many listeners for Graphite data.
+###
+{{ influxdb_conf.graphite | build_influxdb_sub_config_section(section='graphite') }}
+
+###
+### [collectd]
+###
+### Controls one or many listeners for collectd data.
+###
+{{ influxdb_conf.collectd | build_influxdb_sub_config_section(section='collectd') }}
+
+###
+### [opentsdb]
+###
+### Controls one or many listeners for OpenTSDB data.
+###
+{{ influxdb_conf.opentsdb | build_influxdb_sub_config_section(section='opentsdb') }}
+
+###
+### [[udp]]
+###
+### Controls the listeners for InfluxDB line protocol data via UDP.
+###
+{{ influxdb_conf.udp | build_influxdb_sub_config_section(section='udp') }}
+
+###
+### [continuous_queries]
+###
+### Controls how continuous queries are run within InfluxDB.
+###
+{{ influxdb_conf['continuous_queries'] | build_influxdb_config_section(section='continuous_queries', show_header=True) }}

@@ -1,0 +1,12 @@
+## files
+*.pyc
+pytestdebug.log
+molecule/*/ansible.cfg
+molecule/*/inventory
+.python-version
+
+## directories
+*.vagrant/
+.pytest_cache/
+molecule/*/tmp/
+.venv/

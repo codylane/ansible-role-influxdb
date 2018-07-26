@@ -1,0 +1,76 @@
+---
+
+- name: Include OS specific variables
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "{{ ansible_os_family }}.yml"
+
+- name: configure yum repo
+  yum_repository:
+    state: "{{ influxdb_yum_repo.state }}"
+    name: influxdb
+    description: influxdb-rhel
+    baseurl: "{{ influxdb_yum_repo.baseurl }}"
+    enabled: "{{ influxdb_yum_repo.enabled }}"
+    gpgcheck: "{{ influxdb_yum_repo.gpgcheck }}"
+    gpgkey: "{{ influxdb_yum_repo.gpgkey }}"
+  when:
+    ansible_os_family == 'RedHat' and manage_repos == True
+
+- name: Installing influxdb
+  yum:
+    state: present
+    name: "{{ required_packages }}"
+    disable_gpg_check: true
+    update_cache: true
+    validate_certs: true
+  when:
+    ansible_os_family == 'RedHat' and manage_install == True
+
+- name: Configure influxdb.conf
+  notify: restart influxdb
+  template:
+    src: influxdb.conf.j2
+    dest: "{{ influxdb_config_file }}"
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Configure influxdb startupconfig
+  notify: restart influxdb
+  copy:
+    dest: "{{ influxdb_startup_config_file }}"
+    content: |
+      STDERR="{{ influxdb_error_log_file }}"
+      STDOUT="{{ influxdb_stdout_log_file }}"
+      {%- if influxd_opts is defined and influxd_opts -%}
+      INFLUXD_OPTS="{{ influxd_opts }}"
+      {%- endif -%}
+    owner: root
+    group: root
+    mode: 0644
+  when:
+    manage_service == True
+
+# This is used over touch because touch is not an idempotent operation, but this should be
+- name: Create stdout and stderr log files
+  copy:
+    dest: "{{ item }}"
+    content: '\n'
+    force: false
+    owner: "{{ influxdb_log_owner }}"
+    group: "{{ influxdb_log_group }}"
+    mode: 0644
+  loop:
+    - "{{ influxdb_error_log_file }}"
+    - "{{ influxdb_stdout_log_file }}"
+  when:
+    manage_service == True
+
+- name: Configuring influxdb service
+  service:
+    state: started
+    name: "{{ influxdb_service }}"
+    enabled: true
+  when:
+    manage_service == True

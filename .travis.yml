@@ -1,0 +1,21 @@
+---
+
+sudo: true
+services:
+  - docker
+
+before_install:
+  - .travis/init
+
+script:
+  - . .venv/bin/activate
+  - invoke travis
+
+matrix:
+  fast_finish: true
+  include:
+    - os: linux
+      dist: trusty
+      sudo: required
+      language: python
+      python: 2.7

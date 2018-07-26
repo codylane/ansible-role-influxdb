@@ -1,0 +1,4 @@
+---
+
+required_packages:
+  - "influxdb-{{ influxdb_version }}"
