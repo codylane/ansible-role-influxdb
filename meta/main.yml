@@ -1,5 +1,7 @@
 ---
 
+dependencies: []
+
 galaxy_info:
   author: Cody Lane
   description: Ansible role to install open source InfluxDB
